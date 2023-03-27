@@ -112,6 +112,7 @@ install_java() {
 
   _install_tools ${baseDir}
   install_pinpoit_agent ${baseDir}
+  install_opentelemetry_agent ${baseDir}
   install_jmx_exporter_agent ${baseDir}
   _create_profile_script ${baseDir}
   _create_export_script ${JAVA_HOME} "$(pwd)"
@@ -325,6 +326,16 @@ install_pinpoit_agent() {
   PINPOINT_AGENT=${PINPOINT_AGENT:-"${DEFAULT_PINPOINT_AGENT}"}
   mkdir "${install_dir}/.pinpoint"
   curl --retry 3 --silent --location "$PINPOINT_AGENT" | tar xzm -C "${install_dir}/.pinpoint"
+  status "Install pinpoint agent success"
+}
+
+install_opentelemetry_agent() {
+  local install_dir=${1}
+  OPENTELEMETRY_AGENT_VERSION=${OPENTELEMETRY_AGENT_VERSION:-v1.24.0}
+  DEFAULT_OPENTELEMETRY_AGENT="${LANG_GOODRAIN_ME:-http://lang.goodrain.me}/java/opentelemetry/opentelemetry-javaagent-${PINPOINT_AGENT_VERSION}.jar"
+  OPENTELEMETRY_AGENT=${OPENTELEMETRY_AGENT:-"${DEFAULT_OPENTELEMETRY_AGENT}"}
+  mkdir "${install_dir}/agent"
+  wget -P "${install_dir}/agent" "$OPENTELEMETRY_AGENT"
   status "Install pinpoint agent success"
 }
 
