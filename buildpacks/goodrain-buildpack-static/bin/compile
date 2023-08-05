@@ -51,7 +51,10 @@ fetch_nginx_tarball() {
     if [ ! -d "$NGINX_PATH" ]; then
         [ -z "$DEBUG_INFO" ] && echo "-----> Installed Nginx ${NGINX_VERSION}" || echo "-----> Installed Nginx ${NGINX_VERSION} from $NGINX_URL."
         mkdir -p $NGINX_PATH/conf.d
-        curl --silent --max-time 60 --location $NGINX_URL | tar xz --strip-components 2 -C $NGINX_PATH
+        echo "command: curl --max-time 60 --location $nginx_tarball_url | tar xz --strip-components 2 -C $NGINX_PATH"
+        curl --max-time 60 --location $nginx_tarball_url -o nginx.tar.gz 
+        tar xz -f nginx.tar.gz --strip-components 2 -C $NGINX_PATH
+        # curl --silent --max-time 60 --location $NGINX_URL | tar xz --strip-components 2 -C $NGINX_PATH
     fi
 
     # update config files
