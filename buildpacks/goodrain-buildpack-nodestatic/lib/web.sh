@@ -7,6 +7,14 @@ fetch_nginx_tarball() {
         #local version="1.14.2"
         local version="1.22.1-x86-64-ubuntu-22.04.2" # update nginx version
     fi
+    # download from http://lang.goodrain.me/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz
+    # curl --location http://lang.goodrain.me/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz
+    # curl -o nginx.tar.gz --silent --max-time 60 --location http://lang.goodrain.me/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz
+    # curl -o nginx.tar.gz --silent --max-time 60 --location http://10.43.16.6/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz
+    # curl --silent --max-time 60 --location http://lang.goodrain.me/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz
+    
+    # export nginx_tarball_url="http://lang.goodrain.me/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz"
+    # export nginx_tarball_url=" buildpack.oss-cn-shanghai.aliyuncs.com/static/r6d/nginx/nginx-1.22.1-x86-64-ubuntu-22.04.2.tar.gz"
     local nginx_tarball_url="${LANG_GOODRAIN_ME:-http://lang.goodrain.me}/static/r6d/nginx/nginx-${version}.tar.gz"
     local NGINX_PATH="nginx"
     local BP_DIR=$1
@@ -14,7 +22,9 @@ fetch_nginx_tarball() {
     if [ ! -d "$NGINX_PATH" ]; then
         echo "-----> Installed Nginx ${version}"
         mkdir -p $NGINX_PATH/conf.d
-        curl --silent --max-time 60 --location $nginx_tarball_url | tar xz --strip-components 2 -C $NGINX_PATH
+        echo "command: curl --max-time 60 --location $nginx_tarball_url | tar xz --strip-components 2 -C $NGINX_PATH"
+        curl --max-time 60 --location $nginx_tarball_url -o nginx.tar.gz 
+        tar xz -f nginx.tar.gz --strip-components 2 -C $NGINX_PATH
     fi
 
     # update config files
